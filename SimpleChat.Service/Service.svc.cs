@@ -1,18 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
 using System.ServiceModel;
-using System.ServiceModel.Web;
-using System.Text;
 using SimpleChat.Model;
-using SimpleChat.Service.Authentication;
+using SimpleChat.Service.Extensions;
 using System.Runtime.Caching;
+using SimpleChat.DataLayer;
+using SimpleChat.Common.Helpers;
+using SimpleChat.Common.Authentication;
+using SimpleChat.BusinessLayer;
 
 namespace SimpleChat.Service
 {
     public class Service : IService
     {
+        BlProfile blProfile;
+
+        public Service()
+        {
+            var context = OperationContext.Current.GetAuthenticationContext();
+            blProfile = new BlProfile(context);
+        }
+
         public IEnumerable<Message> GetMessagesByConversation(string identifier)
         {
             return null;
@@ -20,6 +28,10 @@ namespace SimpleChat.Service
 
         public IEnumerable<Conversation> GetConversations()
         {
+            var context = OperationContext.Current.GetAuthenticationContext();
+
+            var p = DbHelper.GetConversation(context.Nickname);
+
             var conv = new Conversation()
             {
                 Identifier = "sfsf"
@@ -43,14 +55,28 @@ namespace SimpleChat.Service
             return conv;
         }
 
+        public Profile GetProfile()
+        {
+            return blProfile.GetMe();
+        }
+
         public string IssueToken(IssueTokenBinding binding)
         {
-            var cache = MemoryCache.Default;
+            var p = DbHelper.GetProfile(binding.Nickname);
 
-            var cacheItem = new CacheItem("x123", new AuthenticationContext() { Nickname = binding.Nickname });
-            cache.Add(cacheItem, new CacheItemPolicy());
+            if(PasswordHelper.IsPasswordHashValid(p.PasswordHash, binding.Password))
+            {
+                var cache = MemoryCache.Default;
 
-            return "x123";
+                string token = TokenHelper.NewToken();
+
+                var cacheItem = new CacheItem(token, new AuthenticationContext() { Email = p.Email, Nickname = binding.Nickname });
+                cache.Add(cacheItem, new CacheItemPolicy());
+
+                return token;
+            }
+
+            return null;
         }
     }
 }

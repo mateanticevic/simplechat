@@ -1,5 +1,5 @@
-﻿using SimpleChat.Model;
-using SimpleChat.Service.Authentication;
+﻿using SimpleChat.Common.Authentication;
+using SimpleChat.Model;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.ServiceModel;
@@ -13,6 +13,10 @@ namespace SimpleChat.Service
         [OperationContract]
         [WebGet(UriTemplate = "conversation/{identifier}", ResponseFormat = WebMessageFormat.Json)]
         Conversation GetConversation(string identifier);
+
+        [OperationContract]
+        [WebGet(UriTemplate = "profile", ResponseFormat = WebMessageFormat.Json)]
+        Profile GetProfile();
 
         [OperationContract]
         [WebGet(UriTemplate = "conversation", ResponseFormat = WebMessageFormat.Json)]

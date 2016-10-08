@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{54958500-F52C-430C-8020-5E909C2F272B}</ProjectGuid>
+    <ProjectGuid>{D464500E-EC36-4846-A639-CA72763FA29B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SimpleChat.Model</RootNamespace>
-    <AssemblyName>SimpleChat.Model</AssemblyName>
+    <RootNamespace>SimpleChat.DataLayer</RootNamespace>
+    <AssemblyName>SimpleChat.DataLayer</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,6 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -40,10 +41,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Conversation.cs" />
-    <Compile Include="Message.cs" />
-    <Compile Include="Profile.cs" />
+    <Compile Include="DbHelper.cs" />
+    <Compile Include="DlProfile.cs" />
+    <Compile Include="Entities\ConversationEntity.cs" />
+    <Compile Include="Entities\ProfileEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SimpleChat.Common\SimpleChat.Common.csproj">
+      <Project>{226ba1ad-1007-4ac7-9e01-56a777648348}</Project>
+      <Name>SimpleChat.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

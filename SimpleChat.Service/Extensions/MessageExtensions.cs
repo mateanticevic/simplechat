@@ -1,4 +1,4 @@
-﻿using SimpleChat.Service.Authentication;
+﻿using SimpleChat.Common.Authentication;
 using System.Linq;
 using System.Net;
 using System.ServiceModel.Channels;

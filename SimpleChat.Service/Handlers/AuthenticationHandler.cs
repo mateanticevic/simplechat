@@ -9,7 +9,7 @@ using System.ServiceModel;
 using System;
 using SimpleChat.Service.Extensions;
 using System.Runtime.Caching;
-using SimpleChat.Service.Authentication;
+using SimpleChat.Common.Authentication;
 
 namespace SimpleChat.Service.Handlers
 {
@@ -26,7 +26,9 @@ namespace SimpleChat.Service.Handlers
 
             var cache = MemoryCache.Default;
 
-            var context = (AuthenticationContext)cache.Get(authorizationHeader?.Value);
+            var context = authorizationHeader != null ? (AuthenticationContext)cache.Get(authorizationHeader?.Value) : null;
+
+            if (context != null) request.SetAuthenticationContext(context);
 
             //request.SetAuthenticationContext(context);
 

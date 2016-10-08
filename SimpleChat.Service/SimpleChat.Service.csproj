@@ -41,6 +41,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DevOne.Security.Cryptography.BCrypt, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BCrypt.1.0.0.0\lib\DevOne.Security.Cryptography.BCrypt.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.AI.Agent.Intercept, Version=1.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.1.2.1\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
       <Private>True</Private>
@@ -94,10 +98,8 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Authentication\AuthenticationContext.cs" />
-    <Compile Include="Authentication\AuthorizationHeader.cs" />
-    <Compile Include="Authentication\IssueTokenBinding.cs" />
     <Compile Include="Extensions\MessageExtensions.cs" />
+    <Compile Include="Extensions\OperationContextExtensions.cs" />
     <Compile Include="Handlers\AuthenticationHandler.cs" />
     <Compile Include="Handlers\AuthenticationHandlerBehaviorExtension.cs" />
     <Compile Include="Service.svc.cs">
@@ -119,6 +121,18 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SimpleChat.BusinessLayer\SimpleChat.BusinessLayer.csproj">
+      <Project>{903ec44d-4e7e-47d6-9ef0-b6225e18e5d1}</Project>
+      <Name>SimpleChat.BusinessLayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SimpleChat.Common\SimpleChat.Common.csproj">
+      <Project>{226ba1ad-1007-4ac7-9e01-56a777648348}</Project>
+      <Name>SimpleChat.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SimpleChat.DataLayer\SimpleChat.DataLayer.csproj">
+      <Project>{D464500E-EC36-4846-A639-CA72763FA29B}</Project>
+      <Name>SimpleChat.DataLayer</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SimpleChat.Model\SimpleChat.Model.csproj">
       <Project>{54958500-f52c-430c-8020-5e909c2f272b}</Project>
       <Name>SimpleChat.Model</Name>

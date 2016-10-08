@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace SimpleChat.Service.Authentication
+namespace SimpleChat.Common.Authentication
 {
     public class AuthorizationHeader
     {
