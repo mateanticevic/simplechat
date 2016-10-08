@@ -14,7 +14,7 @@ namespace SimpleChat.DataLayer
                 var parameters = new List<SqlParameter>();
                 parameters.Add(new SqlParameter("Nickname", nickname));
 
-                var dr = connection.ExecuteSpRow("ProfileGet", parameters);
+                var dr = connection.ExecuteSpRow(StoredProcedureName.ProfileGet.ToString(), parameters);
 
                 return new ProfileEntity()
                 {

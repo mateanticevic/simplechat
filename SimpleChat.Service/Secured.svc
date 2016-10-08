@@ -1,0 +1,1 @@
+﻿<%@ ServiceHost Language="C#" Debug="true" Service="SimpleChat.Service.Secured" CodeBehind="Secured.svc.cs" %>

@@ -29,6 +29,11 @@ namespace SimpleChat.Common.Extensions
             return ds;
         }
 
+        public static bool ExecuteSpBool(this SqlConnection connection, string procedureName, IEnumerable<SqlParameter> parameters)
+        {
+            return Convert.ToBoolean(ExecuteSpRow(connection, procedureName, parameters)[0]);
+        }
+
         public static DataTable ExecuteSpTable(this SqlConnection connection, string procedureName, IEnumerable<SqlParameter> parameters)
         {
             return ExecuteSp(connection, procedureName, parameters).Tables[0];
@@ -37,6 +42,11 @@ namespace SimpleChat.Common.Extensions
         public static DataRow ExecuteSpRow(this SqlConnection connection, string procedureName, IEnumerable<SqlParameter> parameters)
         {
             return ExecuteSp(connection, procedureName, parameters).Tables[0].Rows[0];
+        }
+
+        public static string ExecuteSpString(this SqlConnection connection, string procedureName, IEnumerable<SqlParameter> parameters)
+        {
+            return ExecuteSp(connection, procedureName, parameters).Tables[0].Rows[0][0].ToString();
         }
     }
 }

@@ -1,15 +1,14 @@
-﻿using System.Collections.ObjectModel;
-using System.Linq;
+﻿using SimpleChat.Common.Authentication;
+using SimpleChat.Service.Extensions;
+using System.Collections.ObjectModel;
 using System.Net;
+using System.Runtime.Caching;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.ServiceModel.Dispatcher;
 using System.ServiceModel.Web;
 using System.ServiceModel;
 using System;
-using SimpleChat.Service.Extensions;
-using System.Runtime.Caching;
-using SimpleChat.Common.Authentication;
 
 namespace SimpleChat.Service.Handlers
 {
@@ -23,16 +22,15 @@ namespace SimpleChat.Service.Handlers
         {
             var authorizationHeader = request.GetAuthorizationHeader();
 
-
             var cache = MemoryCache.Default;
 
             var context = authorizationHeader != null ? (AuthenticationContext)cache.Get(authorizationHeader?.Value) : null;
 
-            if (context != null) request.SetAuthenticationContext(context);
-
-            //request.SetAuthenticationContext(context);
-
-            return request;
+            if (context != null)
+            {
+                request.SetAuthenticationContext(context);
+                return request;
+            }
 
             throw new WebFaultException(HttpStatusCode.Unauthorized);
         }
@@ -45,8 +43,6 @@ namespace SimpleChat.Service.Handlers
             {
                 foreach (EndpointDispatcher endpointDispatcher in channelDispatcher.Endpoints)
                 {
-                    //endpointDispatcher.DispatchRuntime.MessageInspectors.Add(this);
-
                     if (endpointDispatcher.EndpointAddress.Uri.Scheme.Equals("http", StringComparison.OrdinalIgnoreCase) ||
                         endpointDispatcher.EndpointAddress.Uri.Scheme.Equals("https", StringComparison.OrdinalIgnoreCase))
                     {

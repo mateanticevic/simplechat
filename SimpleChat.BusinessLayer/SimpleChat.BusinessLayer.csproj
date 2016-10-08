@@ -41,8 +41,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BlBase.cs" />
+    <Compile Include="BlConversation.cs" />
     <Compile Include="BlProfile.cs" />
+    <Compile Include="Exceptions\EntityNotFoundException.cs" />
+    <Compile Include="Exceptions\UnauthorizedException.cs" />
+    <Compile Include="Exceptions\UnknownException.cs" />
     <Compile Include="Extensions\Entities\ConversationEntityExtensions.cs" />
+    <Compile Include="Extensions\Entities\MessageEntityExtensions.cs" />
     <Compile Include="Extensions\Entities\ProfileEntityExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -42,10 +42,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DbHelper.cs" />
+    <Compile Include="DlConversation.cs" />
+    <Compile Include="DlMessage.cs" />
     <Compile Include="DlProfile.cs" />
     <Compile Include="Entities\ConversationEntity.cs" />
+    <Compile Include="Entities\MessageEntity.cs" />
     <Compile Include="Entities\ProfileEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StoredProcedureName.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SimpleChat.Common\SimpleChat.Common.csproj">

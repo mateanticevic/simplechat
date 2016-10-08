@@ -94,18 +94,26 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Service.svc" />
+    <Content Include="Public.svc" />
+    <Content Include="Secured.svc" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\MessageExtensions.cs" />
     <Compile Include="Extensions\OperationContextExtensions.cs" />
+    <Compile Include="Extensions\WebOperationContextExtensions.cs" />
     <Compile Include="Handlers\AuthenticationHandler.cs" />
     <Compile Include="Handlers\AuthenticationHandlerBehaviorExtension.cs" />
-    <Compile Include="Service.svc.cs">
-      <DependentUpon>Service.svc</DependentUpon>
+    <Compile Include="Handlers\ExceptionHandler.cs" />
+    <Compile Include="Handlers\ExceptionHandlerBehaviorExtension.cs" />
+    <Compile Include="IPublic.cs" />
+    <Compile Include="Public.svc.cs">
+      <DependentUpon>Public.svc</DependentUpon>
     </Compile>
-    <Compile Include="IService.cs" />
+    <Compile Include="Secured.svc.cs">
+      <DependentUpon>Secured.svc</DependentUpon>
+    </Compile>
+    <Compile Include="ISecured.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
