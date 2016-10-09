@@ -3,15 +3,27 @@ var listMessages = $("#list-messages");
 
 var inputSay = $("#input-say");
 
+var templateConversation = $("#template-conversation");
+var templateMessage = $("#template-message");
+
 var selectedConversation;
 
 $(function () {
-    securedClient.getConversations().OnSuccess = function (data) {
-        for (var i = 0; i < data.length; i++) {
-            listConversations.append("<div onclick='loadConversationMessages(\"" + data[i].Identifier + "\")'>" + data[i].Identifier + "</div>");
+    setInterval(loadConversation, 2000);
+});
+
+function loadConversation() {
+
+    listConversations.empty();
+
+    securedClient.getConversations().OnSuccess = function (conversations) {
+        for (var i = 0; i < conversations.length; i++) {
+            var conversation = conversations[i];
+            var template = templateConversation.html();
+            listConversations.append(Mustache.to_html(template, conversation));
         }
     };
-});
+};
 
 function loadConversationMessages(identifier) {
 
@@ -23,8 +35,13 @@ function loadConversationMessages(identifier) {
 
         for (var i = 0; i < messages.length; i++) {
             var message = messages[i];
-            listMessages.append("<div>" + message.Nickname + ": " + message.Content + "</div>");
+            var template = templateMessage.html();
+            listMessages.append(Mustache.to_html(template, message));
         }
+
+        securedClient.putConversationSeen(selectedConversation).OnSuccess = function () {
+
+        };
     };
 };
 
@@ -32,6 +49,13 @@ function say() {
     securedClient.putConversationMessage(selectedConversation, inputSay.val()).OnSuccess = function () {
         inputSay.val('');
     };
+
+    return false;
+};
+
+function singOut() {
+    localStorage.removeItem("token");
+    window.location.href = '/home/login';
 
     return false;
 };

@@ -9,7 +9,7 @@ namespace SimpleChat.BusinessLayer.Extensions.Entities
         {
             return new Conversation()
             {
-                HasNewMessages = entity.HasNewMessages,
+                NewMessages = entity.NewMessages,
                 Identifier = entity.Identifier,
                 LastActivity = entity.LastActivity
             };

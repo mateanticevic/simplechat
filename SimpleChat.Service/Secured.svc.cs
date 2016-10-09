@@ -7,6 +7,11 @@ using System.Net;
 using System.ServiceModel.Web;
 using System.ServiceModel;
 using System;
+using System.Text;
+using System.Security.Cryptography;
+using System.Xml.Serialization;
+using System.IO;
+using Newtonsoft.Json;
 
 namespace SimpleChat.Service
 {
@@ -29,7 +34,22 @@ namespace SimpleChat.Service
 
         public IEnumerable<Conversation> GetConversations()
         {
-            return blConversation.GetConversations();
+            var conversations = blConversation.GetConversations();
+
+            string ifNoneMatch = WebOperationContext.Current.IncomingRequest.Headers.Get("If-None-Match");
+
+            string etag = GetHash(conversations);
+
+            if (ifNoneMatch != etag)
+            {
+                WebOperationContext.Current.OutgoingResponse.ETag = etag;
+                return conversations;
+            }
+            else
+            {
+                WebOperationContext.Current.SetStatusCode(HttpStatusCode.NotModified);
+                return null;
+            }
         }
 
         public Conversation GetConversation(string identifier)
@@ -148,6 +168,24 @@ namespace SimpleChat.Service
         public object PostProfile(Profile profile)
         {
             throw new NotImplementedException();
+        }
+
+        public static string GetHash(object value)
+        {
+            string json = JsonConvert.SerializeObject(value);
+
+            var Sb = new StringBuilder();
+
+            using (SHA256 hash = SHA256.Create())
+            {
+                Encoding enc = Encoding.UTF8;
+                byte[] result = hash.ComputeHash(enc.GetBytes(json));
+
+                foreach (byte b in result)
+                    Sb.Append(b.ToString("x2"));
+            }
+
+            return Sb.ToString().Substring(0,6);
         }
     }
 }

@@ -8,8 +8,8 @@ namespace SimpleChat.DataLayer.Entities
 {
     public class ConversationEntity
     {
-        public bool HasNewMessages { get; set; }
-        public string Identifier { get; set; }
         public DateTime? LastActivity { get; set; }
+        public int NewMessages { get; set; }
+        public string Identifier { get; set; }
     }
 }

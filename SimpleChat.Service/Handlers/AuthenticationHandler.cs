@@ -29,6 +29,7 @@ namespace SimpleChat.Service.Handlers
             if (context != null)
             {
                 request.SetAuthenticationContext(context);
+
                 return request;
             }
 

@@ -3,10 +3,14 @@
     ViewBag.Title = "Index";
 }
 
-<div id="list-conversations">
+<div>
+    <button class="btn btn-default navbar-btn" onclick="return singOut();">Sign out</button>
 </div>
 
-<div id="list-messages">
+<ul id="list-conversations" class="list-group">
+</ul>
+
+<div id="list-messages" class="list-group">
 </div>
 
 <div>
@@ -15,6 +19,19 @@
         <button class="btn btn-default navbar-btn" onclick="return say();">Say</button>
     </form>
 </div>
+
+<script id="template-conversation" type="text/template">
+    <li class="list-group-item" href="#">
+        <span class="badge">{{NewMessages}}</span>
+        <div onclick='loadConversationMessages("{{Identifier}}")'>{{Identifier}}</div>
+    </li>
+</script>
+
+<script id="template-message" type="text/template">
+    <li class="list-group-item">
+        {{Profile.Nickname}}: {{Content}}
+    </li>
+</script>
 
 @Scripts.Render("~/Scripts/Service/securedClient.js")
 @Scripts.Render("~/Scripts/View/chatView.js")

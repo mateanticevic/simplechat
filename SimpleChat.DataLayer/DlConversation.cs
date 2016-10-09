@@ -48,7 +48,7 @@ namespace SimpleChat.DataLayer
                     {
                         Identifier = dr["Identifier"].ToString(),
                         LastActivity = dr["LastMessage"] is DBNull ? null : (DateTime?)Convert.ToDateTime(dr["LastMessage"]),
-                        HasNewMessages = Convert.ToBoolean(dr["HasNewMessages"])
+                        NewMessages = Convert.ToInt32(dr["NewMessages"])
                     };
                 }
             }

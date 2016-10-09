@@ -55,8 +55,19 @@ namespace SimpleChat.BusinessLayer
         {
             try
             {
-                return DlConversation.GetConversations(AuthenticationContext.Nickname)
-                                     .Select(x => x.ToDto());
+                var conversationEntities = DlConversation.GetConversations(AuthenticationContext.Nickname);
+
+                var conversations = new List<Conversation>();
+
+                foreach (var conversationEntity in conversationEntities)
+                {
+                    var conversation = conversationEntity.ToDto();
+                    conversation.Profiles = DlConversation.GetProfiles(conversationEntity.Identifier)
+                                                          .Select(x => x.ToDto());
+                    conversations.Add(conversation);
+                }
+
+                return conversations;
             }
             catch
             {
@@ -116,8 +127,16 @@ namespace SimpleChat.BusinessLayer
 
         public IEnumerable<Message> GetMessages(string conversationIdentifier)
         {
-            var messages = DlConversation.GetMessages(conversationIdentifier)
-                                         .Select(x => x.ToDto());
+            var messageEntities = DlConversation.GetMessages(conversationIdentifier);
+
+            var messages = new List<Message>();
+            foreach (var messageEntity in messageEntities)
+            {
+                var message = messageEntity.ToDto();
+                message.Profile = DlProfile.GetByNickname(messageEntity.Nickname).ToDto();
+
+                messages.Add(message);
+            }
 
             return messages;
         }

@@ -77,3 +77,26 @@ securedClient.putConversationMessage = function (identifier, message) {
 
     return callback;
 };
+
+securedClient.putConversationSeen = function (identifier) {
+    var callback = {};
+
+    $.ajax({
+        url: '/api/secured.svc/conversation/' + identifier + '/seen',
+        contentType: "application/json",
+        type: 'PUT',
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("Authorization", "Token " + token);
+        },
+        complete: function (xhr) {
+            if (xhr.status == "401") {
+                window.location.href = '/home/login';
+            }
+        },
+        success: function (data) {
+            callback.OnSuccess(data);
+        }
+    });
+
+    return callback;
+};
