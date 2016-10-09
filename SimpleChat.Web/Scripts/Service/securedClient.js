@@ -2,7 +2,7 @@
 
 var token = localStorage.getItem("token").toString();
 
-securedClient.getConversations = function () {
+securedClient.getConversations = function (etag) {
     var callback = {};
 
     $.ajax({
@@ -11,11 +11,14 @@ securedClient.getConversations = function () {
         type: 'GET',
         beforeSend: function (xhr) {
             xhr.setRequestHeader("Authorization", "Token " + token);
+            xhr.setRequestHeader("If-None-Match", etag);
         },
         complete: function (xhr) {
             if (xhr.status == "401") {
                 window.location.href = '/home/login';
             }
+
+            callback.OnComplete(xhr);
         },
         success: function (data) {
             callback.OnSuccess(data);
@@ -25,7 +28,7 @@ securedClient.getConversations = function () {
     return callback;
 };
 
-securedClient.getConversationMessages = function (identifier) {
+securedClient.getConversationMessages = function (identifier, etag) {
     var callback = {};
 
     $.ajax({
@@ -34,11 +37,14 @@ securedClient.getConversationMessages = function (identifier) {
         type: 'GET',
         beforeSend: function (xhr) {
             xhr.setRequestHeader("Authorization", "Token " + token);
+            xhr.setRequestHeader("If-None-Match", etag);
         },
         complete: function (xhr) {
             if (xhr.status == "401") {
                 window.location.href = '/home/login';
             }
+
+            callback.OnComplete(xhr);
         },
         success: function (data) {
             callback.OnSuccess(data);

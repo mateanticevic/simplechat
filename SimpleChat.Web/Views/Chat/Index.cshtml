@@ -23,7 +23,7 @@
 <script id="template-conversation" type="text/template">
     <li class="list-group-item" href="#">
         <span class="badge">{{NewMessages}}</span>
-        <div onclick='loadConversationMessages("{{Identifier}}")'>{{Identifier}}</div>
+        <div onclick='loadConversationMessages("{{Identifier}}")'><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> {{Profiles.0.Nickname}}</div>
     </li>
 </script>
 

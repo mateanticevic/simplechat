@@ -64,6 +64,8 @@ namespace SimpleChat.BusinessLayer
                     var conversation = conversationEntity.ToDto();
                     conversation.Profiles = DlConversation.GetProfiles(conversationEntity.Identifier)
                                                           .Select(x => x.ToDto());
+                    conversation.Profiles = conversation.Profiles.Where(x => x.Nickname != AuthenticationContext.Nickname);
+
                     conversations.Add(conversation);
                 }
 

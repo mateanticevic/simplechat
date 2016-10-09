@@ -1,17 +1,15 @@
-﻿using SimpleChat.BusinessLayer;
+﻿using Newtonsoft.Json;
+using SimpleChat.BusinessLayer;
 using SimpleChat.Model.Binding;
 using SimpleChat.Model;
 using SimpleChat.Service.Extensions;
 using System.Collections.Generic;
 using System.Net;
+using System.Security.Cryptography;
 using System.ServiceModel.Web;
 using System.ServiceModel;
-using System;
 using System.Text;
-using System.Security.Cryptography;
-using System.Xml.Serialization;
-using System.IO;
-using Newtonsoft.Json;
+using System;
 
 namespace SimpleChat.Service
 {
@@ -29,7 +27,23 @@ namespace SimpleChat.Service
 
         public IEnumerable<Message> GetMessagesByConversation(string identifier)
         {
-            return blConversation.GetMessages(identifier);
+            var messages = blConversation.GetMessages(identifier);
+
+            string ifNoneMatch = WebOperationContext.Current.IncomingRequest.Headers.Get("If-None-Match");
+
+            string etag = GetHash(messages);
+
+            if (ifNoneMatch != etag)
+            {
+                WebOperationContext.Current.OutgoingResponse.ETag = etag;
+                return messages;
+            }
+            else
+            {
+                WebOperationContext.Current.OutgoingResponse.ETag = etag;
+                WebOperationContext.Current.SetStatusCode(HttpStatusCode.NotModified);
+                return null;
+            }
         }
 
         public IEnumerable<Conversation> GetConversations()
@@ -47,6 +61,7 @@ namespace SimpleChat.Service
             }
             else
             {
+                WebOperationContext.Current.OutgoingResponse.ETag = etag;
                 WebOperationContext.Current.SetStatusCode(HttpStatusCode.NotModified);
                 return null;
             }

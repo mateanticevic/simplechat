@@ -8,40 +8,65 @@ var templateMessage = $("#template-message");
 
 var selectedConversation;
 
+var conversationsETag;
+var messagesETag;
+
+var intervalMessages;
+
 $(function () {
     setInterval(loadConversation, 2000);
 });
 
 function loadConversation() {
 
-    listConversations.empty();
+    var get = securedClient.getConversations(conversationsETag);
 
-    securedClient.getConversations().OnSuccess = function (conversations) {
-        for (var i = 0; i < conversations.length; i++) {
-            var conversation = conversations[i];
-            var template = templateConversation.html();
-            listConversations.append(Mustache.to_html(template, conversation));
+    get.OnSuccess = function (conversations) {
+
+        if(conversations != undefined){
+            listConversations.empty();
+            for (var i = 0; i < conversations.length; i++) {
+                var conversation = conversations[i];
+                var template = templateConversation.html();
+                listConversations.append(Mustache.to_html(template, conversation));
+            }
         }
+    };
+
+    get.OnComplete = function (xhr) {
+        conversationsETag = xhr.getResponseHeader("ETag");
     };
 };
 
 function loadConversationMessages(identifier) {
+    setInterval(loadConversationMessagesT, 2000, identifier);
+}
+
+function loadConversationMessagesT(identifier) {
 
     selectedConversation = identifier;
 
-    securedClient.getConversationMessages(identifier).OnSuccess = function (messages) {
+    var get = securedClient.getConversationMessages(identifier, messagesETag);
 
-        listMessages.empty();
+    get.OnSuccess = function (messages) {
 
-        for (var i = 0; i < messages.length; i++) {
-            var message = messages[i];
-            var template = templateMessage.html();
-            listMessages.append(Mustache.to_html(template, message));
+        if (messages != undefined && messages.length > 0) {
+
+            listMessages.empty();
+
+            for (var i = 0; i < messages.length; i++) {
+                var message = messages[i];
+                var template = templateMessage.html();
+                listMessages.append(Mustache.to_html(template, message));
+            }
+
+            securedClient.putConversationSeen(selectedConversation).OnSuccess = function () {
+            };
         }
+    };
 
-        securedClient.putConversationSeen(selectedConversation).OnSuccess = function () {
-
-        };
+    get.OnComplete = function (xhr) {
+        messagesETag = xhr.getResponseHeader("ETag");
     };
 };
 
