@@ -9,6 +9,51 @@ namespace SimpleChat.DataLayer
 {
     public static class DlConversation
     {
+        public static bool DeleteMessages(string conversationIdentifier, string nickname)
+        {
+            using (var connection = DbHelper.GetConnection())
+            {
+                var parameters = new List<SqlParameter>();
+                parameters.Add(new SqlParameter("Identifier", conversationIdentifier));
+                parameters.Add(new SqlParameter("Nickname", nickname));
+
+                return connection.ExecuteSpBool(StoredProcedureName.ConversationMessagesDelete.ToString(), parameters);
+            }
+        }
+
+        public static bool DeleteProfile(string conversationIdentifier, string nickname)
+        {
+            using (var connection = DbHelper.GetConnection())
+            {
+                var parameters = new List<SqlParameter>();
+                parameters.Add(new SqlParameter("Identifier", conversationIdentifier));
+                parameters.Add(new SqlParameter("Nickname", nickname));
+
+                return connection.ExecuteSpBool(StoredProcedureName.ConversationProfileDelete.ToString(), parameters);
+            }
+        }
+
+        public static IEnumerable<ConversationEntity> GetConversations(string nickname)
+        {
+            using (var connection = DbHelper.GetConnection())
+            {
+                var parameters = new List<SqlParameter>();
+                parameters.Add(new SqlParameter("Nickname", nickname));
+
+                var dt = connection.ExecuteSpTable(StoredProcedureName.ConversationsGet.ToString(), parameters);
+
+                foreach (DataRow dr in dt.Rows)
+                {
+                    yield return new ConversationEntity()
+                    {
+                        Identifier = dr["Identifier"].ToString(),
+                        LastActivity = dr["LastMessage"] is DBNull ? null : (DateTime?)Convert.ToDateTime(dr["LastMessage"]),
+                        HasNewMessages = Convert.ToBoolean(dr["HasNewMessages"])
+                    };
+                }
+            }
+        }
+
         public static IEnumerable<MessageEntity> GetMessages(string conversationIdentifier)
         {
             using (var connection = DbHelper.GetConnection())

@@ -6,6 +6,8 @@ using SimpleChat.Model.Binding;
 using SimpleChat.Model;
 using System.Collections.Generic;
 using System.Linq;
+using System.Transactions;
+using System;
 
 namespace SimpleChat.BusinessLayer
 {
@@ -49,6 +51,19 @@ namespace SimpleChat.BusinessLayer
             return identifier;
         }
 
+        public IEnumerable<Conversation> GetConversations()
+        {
+            try
+            {
+                return DlConversation.GetConversations(AuthenticationContext.Nickname)
+                                     .Select(x => x.ToDto());
+            }
+            catch
+            {
+                throw new UnknownException();
+            }
+        }
+
         public bool DeleteMessage(string messageIdentifier)
         {
             try
@@ -62,9 +77,40 @@ namespace SimpleChat.BusinessLayer
 
                 return DlMessage.DeleteMessage(messageIdentifier);
             }
-            catch
+            catch (Exception e)
             {
-                throw new EntityNotFoundException();
+                throw new EntityNotFoundException(e);
+            }
+        }
+
+        public bool DeleteMessages(string conversationIdentifier)
+        {
+            try
+            {
+                return DlConversation.DeleteMessages(conversationIdentifier, AuthenticationContext.Nickname);
+            }
+            catch(Exception e)
+            {
+                throw new EntityNotFoundException(e);
+            }
+        }
+
+        public bool DeleteProfile(string conversationIdentifier)
+        {
+            try
+            {
+                using (var transaction = new TransactionScope())
+                {
+                    bool success = DlConversation.DeleteMessages(conversationIdentifier, AuthenticationContext.Nickname)
+                                   && DlConversation.DeleteProfile(conversationIdentifier, AuthenticationContext.Nickname);
+
+                    transaction.Complete();
+                    return success;
+                }
+            }
+            catch (Exception e)
+            {
+                throw new EntityNotFoundException(e);
             }
         }
 
@@ -82,6 +128,18 @@ namespace SimpleChat.BusinessLayer
                                          .Select(x => x.ToDto());
 
             return profiles;
+        }
+
+        public bool Seen(string conversationIdentifier)
+        {
+            try
+            {
+                return DlConversationSeen.Insert(AuthenticationContext.Nickname, conversationIdentifier);
+            }
+            catch (Exception e)
+            {
+                throw new EntityNotFoundException(e);
+            }
         }
     }
 }

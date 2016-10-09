@@ -1,5 +1,4 @@
-﻿using SimpleChat.Common.Authentication;
-using SimpleChat.Model;
+﻿using SimpleChat.Model;
 using System.Collections.Generic;
 using System.ServiceModel.Web;
 using System.ServiceModel;
@@ -17,24 +16,24 @@ namespace SimpleChat.Service
         object DeleteMessage(string identifier);
 
         [OperationContract]
-        [WebGet(UriTemplate = "conversation/{identifier}", ResponseFormat = WebMessageFormat.Json)]
-        Conversation GetConversation(string identifier);
-
-        [OperationContract]
-        [WebGet(UriTemplate = "conversation/{identifier}/profiles", ResponseFormat = WebMessageFormat.Json)]
-        IEnumerable<Profile> GetConversationProfiles(string identifier);
-
-        [OperationContract]
         [WebGet(UriTemplate = "conversation", ResponseFormat = WebMessageFormat.Json)]
         IEnumerable<Conversation> GetConversations();
+
+        [OperationContract]
+        [WebInvoke(Method = "PUT", UriTemplate = "conversation", ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json)]
+        string PutConversation();
+
+        [OperationContract]
+        [WebGet(UriTemplate = "conversation/{identifier}", ResponseFormat = WebMessageFormat.Json)]
+        Conversation GetConversation(string identifier);
 
         [OperationContract]
         [WebGet(UriTemplate = "conversation/{identifier}/messages", ResponseFormat = WebMessageFormat.Json)]
         IEnumerable<Message> GetMessagesByConversation(string identifier);
 
         [OperationContract]
-        [WebInvoke(Method = "PUT", UriTemplate = "conversation", ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json)]
-        string PutConversation();
+        [WebInvoke(Method = "DELETE", UriTemplate = "conversation/{identifier}/messages", ResponseFormat = WebMessageFormat.Json)]
+        object DeleteMessagesByConversation(string identifier);
 
         [OperationContract]
         [WebInvoke(Method = "PUT", UriTemplate = "conversation/{identifier}/message", ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json)]
@@ -43,6 +42,18 @@ namespace SimpleChat.Service
         [OperationContract]
         [WebInvoke(Method = "PUT", UriTemplate = "conversation/{identifier}/profile", ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json)]
         object PutConversationProfile(string identifier, Profile profile);
+
+        [OperationContract]
+        [WebInvoke(Method = "PUT", UriTemplate = "conversation/{identifier}/seen", RequestFormat = WebMessageFormat.Json)]
+        object PutConversationSeen(string identifier);
+
+        [OperationContract]
+        [WebInvoke(Method = "DELETE", UriTemplate = "conversation/{identifier}/profile", ResponseFormat = WebMessageFormat.Json)]
+        object DeleteConversationProfile(string identifier);
+
+        [OperationContract]
+        [WebGet(UriTemplate = "conversation/{identifier}/profiles", ResponseFormat = WebMessageFormat.Json)]
+        IEnumerable<Profile> GetConversationProfiles(string identifier);
 
         #endregion
 

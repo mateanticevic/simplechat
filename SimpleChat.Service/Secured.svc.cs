@@ -29,7 +29,7 @@ namespace SimpleChat.Service
 
         public IEnumerable<Conversation> GetConversations()
         {
-            return null;
+            return blConversation.GetConversations();
         }
 
         public Conversation GetConversation(string identifier)
@@ -92,6 +92,54 @@ namespace SimpleChat.Service
             else
             {
                 WebOperationContext.Current.SetStatusCode(HttpStatusCode.BadRequest);
+            }
+
+            return null;
+        }
+
+        public object DeleteMessagesByConversation(string identifier)
+        {
+            bool success = blConversation.DeleteMessages(identifier);
+
+            if(success)
+            {
+                WebOperationContext.Current.SetStatusCode(HttpStatusCode.NoContent);
+            }
+            else
+            {
+                WebOperationContext.Current.SetStatusCode(HttpStatusCode.InternalServerError);
+            }
+
+            return null;
+        }
+
+        public object PutConversationSeen(string identifier)
+        {
+            bool success = blConversation.Seen(identifier);
+
+            if(success)
+            {
+                WebOperationContext.Current.SetStatusCode(HttpStatusCode.Created);
+            }
+            else
+            {
+                WebOperationContext.Current.SetStatusCode(HttpStatusCode.InternalServerError);
+            }
+
+            return null;
+        }
+
+        public object DeleteConversationProfile(string identifier)
+        {
+            bool success = blConversation.DeleteProfile(identifier);
+
+            if (success)
+            {
+                WebOperationContext.Current.SetStatusCode(HttpStatusCode.NoContent);
+            }
+            else
+            {
+                WebOperationContext.Current.SetStatusCode(HttpStatusCode.InternalServerError);
             }
 
             return null;

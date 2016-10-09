@@ -10,6 +10,6 @@ namespace SimpleChat.Model
     {
         public bool HasNewMessages { get; set; }
         public string Identifier { get; set; }
-        public DateTime LastActivity { get; set; }
+        public DateTime? LastActivity { get; set; }
     }
 }

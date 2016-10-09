@@ -42,33 +42,5 @@ namespace SimpleChat.DataLayer
                 };
             }
         }
-
-        public static IEnumerable<ConversationEntity> GetConversation(string nickname)
-        {
-            using (var db = GetConnection())
-            {
-                var c = new SqlCommand("ConversationsGet", db) { CommandType = CommandType.StoredProcedure };
-                c.Parameters.Add(new SqlParameter("Nickname", nickname));
-
-
-                db.Open();
-
-                var da = new SqlDataAdapter(c);
-
-                var ds = new DataSet();
-
-                da.Fill(ds);
-
-                foreach (DataRow dr in ds.Tables[0].Rows)
-                {
-                    yield return new ConversationEntity()
-                    {
-                        Identifier = dr["Identifier"].ToString(),
-                        LastActivity = Convert.ToDateTime(dr["LastMessage"]),
-                        HasNewMessages = Convert.ToBoolean(dr["HasNewMessages"])
-                    };
-                }
-            }
-        }
     }
 }
