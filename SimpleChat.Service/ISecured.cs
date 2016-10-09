@@ -63,6 +63,10 @@ namespace SimpleChat.Service
         [WebGet(UriTemplate = "profile", ResponseFormat = WebMessageFormat.Json)]
         Profile GetProfile();
 
+        [OperationContract]
+        [WebInvoke(Method = "POST", UriTemplate = "profile", RequestFormat = WebMessageFormat.Json)]
+        object PostProfile(Profile profile);
+
         #endregion
     }
 }

@@ -1,12 +1,10 @@
-﻿using SimpleChat.BusinessLayer.Extensions.Entities;
+﻿using SimpleChat.BusinessLayer.Exceptions;
+using SimpleChat.BusinessLayer.Extensions.Dto;
+using SimpleChat.BusinessLayer.Extensions.Entities;
 using SimpleChat.Common.Authentication;
+using SimpleChat.Common.Helpers;
 using SimpleChat.DataLayer;
 using SimpleChat.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SimpleChat.BusinessLayer
 {
@@ -14,7 +12,21 @@ namespace SimpleChat.BusinessLayer
     {
         public BlProfile(AuthenticationContext authenticationContext) : base(authenticationContext)
         {
+        }
 
+        public bool Create(Profile profile)
+        {
+            try
+            {
+                var profileEntity = profile.ToEntity();
+                profileEntity.PasswordHash = PasswordHelper.GetPasswordHash(profile.Password);
+
+                return DlProfile.Insert(profileEntity);
+            }
+            catch
+            {
+                throw new UnknownException();
+            }
         }
 
         public Profile GetMe()

@@ -144,5 +144,10 @@ namespace SimpleChat.Service
 
             return null;
         }
+
+        public object PostProfile(Profile profile)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -47,6 +47,7 @@
     <Compile Include="Exceptions\EntityNotFoundException.cs" />
     <Compile Include="Exceptions\UnauthorizedException.cs" />
     <Compile Include="Exceptions\UnknownException.cs" />
+    <Compile Include="Extensions\Dto\ProfileExtensions.cs" />
     <Compile Include="Extensions\Entities\ConversationEntityExtensions.cs" />
     <Compile Include="Extensions\Entities\MessageEntityExtensions.cs" />
     <Compile Include="Extensions\Entities\ProfileEntityExtensions.cs" />
