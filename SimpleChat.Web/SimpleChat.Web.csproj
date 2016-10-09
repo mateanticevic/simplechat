@@ -17,7 +17,7 @@
     <AssemblyName>SimpleChat.Web</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -187,7 +187,13 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\Service\publicClient.js" />
+    <Content Include="Scripts\Service\securedClient.js" />
     <Content Include="Scripts\Validation\register_validate.js" />
+    <Content Include="Scripts\View\chatView.js" />
+    <Content Include="Scripts\View\indexView.js" />
+    <Content Include="Scripts\View\loginView.js" />
+    <Content Include="Scripts\View\registerView.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -232,7 +238,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>18006</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:18006/</IISUrl>
+          <IISUrl>http://chat.anticevic.dev</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

@@ -3,5 +3,18 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Chat</h2>
+<div id="list-conversations">
+</div>
 
+<div id="list-messages">
+</div>
+
+<div>
+    <form>
+        <input id="input-say" class="form-control" type="text"/>
+        <button class="btn btn-default navbar-btn" onclick="return say();">Say</button>
+    </form>
+</div>
+
+@Scripts.Render("~/Scripts/Service/securedClient.js")
+@Scripts.Render("~/Scripts/View/chatView.js")

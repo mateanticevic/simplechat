@@ -4,7 +4,11 @@
 }
 
 <form>
-    <input class="form-control" type="text" placeholder="Nickname" />
-    <input class="form-control" type="password" placeholder="Password" />
-    <button class="btn btn-default navbar-btn">Login</button>
+    <input id="input-nickname" class="form-control" type="text" placeholder="Nickname" />
+    <input id="input-password" class="form-control" type="password" placeholder="Password" />
+    <button class="btn btn-default navbar-btn" onclick="return login();">Login</button>
 </form>
+
+
+@Scripts.Render("~/Scripts/Service/publicClient.js")
+@Scripts.Render("~/Scripts/View/loginView.js")
