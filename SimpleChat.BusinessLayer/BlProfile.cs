@@ -5,6 +5,7 @@ using SimpleChat.Common.Authentication;
 using SimpleChat.Common.Helpers;
 using SimpleChat.DataLayer;
 using SimpleChat.Model;
+using System;
 
 namespace SimpleChat.BusinessLayer
 {
@@ -34,6 +35,19 @@ namespace SimpleChat.BusinessLayer
             var profileEntity = DlProfile.GetByNickname(AuthenticationContext.Nickname);
 
             return profileEntity.ToDto();
+        }
+
+        public Profile Get(string nickname)
+        {
+            try
+            {
+                return DlProfile.GetByNickname(nickname)
+                                .ToDto();
+            }
+            catch (Exception e)
+            {
+                throw new EntityNotFoundException(e);
+            }
         }
     }
 }

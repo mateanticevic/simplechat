@@ -25,6 +25,22 @@ namespace SimpleChat.Service
             blProfile = new BlProfile(null);
         }
 
+        public object HeadProfile(string nickname)
+        {
+            var profile = blProfile.Get(nickname);
+
+            if(profile != null)
+            {
+                WebOperationContext.Current.SetStatusCode(HttpStatusCode.OK);
+            }
+            else
+            {
+                WebOperationContext.Current.SetStatusCode(HttpStatusCode.NotFound);
+            }
+
+            return null;
+        }
+
         public string IssueToken(IssueTokenBinding binding)
         {
             var p = DbHelper.GetProfile(binding.Nickname);

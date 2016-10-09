@@ -13,6 +13,10 @@ namespace SimpleChat.Service
         string IssueToken(IssueTokenBinding binding);
 
         [OperationContract]
+        [WebInvoke(Method = "HEAD", UriTemplate = "profile/{nickname}", RequestFormat = WebMessageFormat.Json)]
+        object HeadProfile(string nickname);
+
+        [OperationContract]
         [WebInvoke(Method = "PUT", UriTemplate = "profile", RequestFormat = WebMessageFormat.Json)]
         object PutProfile(Profile profile);
     }
