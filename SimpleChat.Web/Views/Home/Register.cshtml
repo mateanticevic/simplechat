@@ -1,0 +1,33 @@
+﻿
+@{
+    ViewBag.Title = "Register";
+}
+
+<form>
+    <input class="form-control" type="text" placeholder="Nickname" />
+    <div id="validation-nickname" class="alert alert-success" role="alert">
+        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+    </div>
+    <input id="input-email"  class="form-control" type="text" placeholder="Email" />
+    <div id="validation-email" class="alert alert-danger" role="alert">
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+        <span class="sr-only">Error:</span>
+        Enter a valid email address
+    </div>
+    <input id="input-password" class="form-control" type="password" placeholder="Password" />
+    <div id="validation-password" class="alert alert-danger" role="alert">
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+        <span class="sr-only">Error:</span>
+        Password has to be at least 6 characters long
+    </div>
+    <input id="input-password-repeat" class="form-control" type="password" placeholder="Repeat password" />
+    <div id="validation-password-repeat" class="alert alert-danger" role="alert">
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+        <span class="sr-only">Error:</span>
+        Passwords don't match
+    </div>
+    <button class="btn btn-default navbar-btn">Register</button>
+</form>
+
+
+@Scripts.Render("~/Scripts/Validation/register_validate.js")

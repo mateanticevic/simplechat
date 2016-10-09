@@ -6,19 +6,11 @@ using System.Web.Mvc;
 
 namespace SimpleChat.Web.Controllers
 {
-    [RoutePrefix("")]
-    public class HomeController : Controller
+    [RoutePrefix("chat")]
+    public class ChatController : Controller
     {
+        [Route("")]
         public ActionResult Index()
-        {
-            return View();
-        }
-        public ActionResult Register()
-        {
-            return View();
-        }
-
-        public ActionResult Login()
         {
             return View();
         }
