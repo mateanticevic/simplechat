@@ -5,6 +5,8 @@ using SimpleChat.Common.Authentication;
 using SimpleChat.Common.Helpers;
 using SimpleChat.DataLayer;
 using SimpleChat.Model;
+using System.Collections.Generic;
+using System.Linq;
 using System;
 
 namespace SimpleChat.BusinessLayer
@@ -47,6 +49,19 @@ namespace SimpleChat.BusinessLayer
             catch (Exception e)
             {
                 throw new EntityNotFoundException(e);
+            }
+        }
+
+        public IEnumerable<Profile> Search(string searchQuery)
+        {
+            try
+            {
+                return DlProfile.Search(searchQuery)
+                                .Select(x => x.ToDto());
+            }
+            catch
+            {
+                throw new UnknownException();
             }
         }
     }

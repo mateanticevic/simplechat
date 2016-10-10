@@ -15,6 +15,7 @@
         MessageInsert,
         ProfileGet,
         ProfileInsert,
+        ProfilesSearch,
         ProfileUpdate
     }
 }

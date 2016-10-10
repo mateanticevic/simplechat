@@ -202,5 +202,10 @@ namespace SimpleChat.Service
 
             return Sb.ToString().Substring(0,6);
         }
+
+        public IEnumerable<Profile> GetProfiles(string searchQuery)
+        {
+            return blProfile.Search(searchQuery);
+        }
     }
 }

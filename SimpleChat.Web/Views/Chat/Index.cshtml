@@ -3,33 +3,74 @@
     ViewBag.Title = "Index";
 }
 
-<div>
-    <button class="btn btn-default navbar-btn" onclick="return singOut();">Sign out</button>
+
+<div class="col-lg-12">
+    <div>
+        <button class="btn btn-default navbar-btn" onclick="return singOut();">Sign out</button>
+    </div>
+</div>
+<div class="col-lg-10">
+    <div class="col-lg-4">
+        <ul id="list-conversations" class="list-group"></ul>
+    </div>
+    <div class="col-lg-5">
+        <form>
+            <div class="input-group">
+                <input id="input-say" class="form-control" type="text" placeholder="Say something">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button" onclick="return say();">Say</button>
+                </span>
+            </div>
+        </form>
+        <div id="list-messages" class="list-group pre-scrollable" style="margin-top: 10px;">
+        </div>
+    </div>
+    <div class="col-lg-3">
+        <div>
+            <input id="input-search" class="form-control" placeholder="Add people" type="text" />
+            <button type="button" class="btn btn-default">
+                <span class="glyphicon glyphicon-envelope"></span> New conversation
+            </button>
+            <button type="button" class="btn btn-danger" onclick="return deleteMessages();">
+                <span class="glyphicon glyphicon-trash"></span> Delete all messages
+            </button>
+            <button type="button" class="btn btn-danger" onclick="return leaveConversation();">
+                <span class="glyphicon glyphicon-log-out"></span> Leave conversation
+            </button>
+        </div>
+        <h4>People in this conversation</h4>
+        <ul id="list-profiles-search" class="list-group"></ul>
+
+        <ul id="list-profiles" class="list-group"></ul>
+    </div>
 </div>
 
-<ul id="list-conversations" class="list-group">
-</ul>
-
-<div id="list-messages" class="list-group">
-</div>
-
-<div>
-    <form>
-        <input id="input-say" class="form-control" type="text"/>
-        <button class="btn btn-default navbar-btn" onclick="return say();">Say</button>
-    </form>
-</div>
 
 <script id="template-conversation" type="text/template">
-    <li class="list-group-item" href="#">
+    <li class="list-group-item activatable" style="cursor:pointer" onclick='loadConversationMessages("{{Identifier}}")'>
         <span class="badge">{{NewMessages}}</span>
-        <div onclick='loadConversationMessages("{{Identifier}}")'><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> {{Profiles.0.Nickname}}</div>
+        <div><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> {{#Profiles}} <span class="label label-default">{{Nickname}}</span> {{/Profiles}}</div>
     </li>
 </script>
 
 <script id="template-message" type="text/template">
     <li class="list-group-item">
-        {{Profile.Nickname}}: {{Content}}
+        <b>{{Profile.Nickname}}</b>: {{Content}}
+        {{#CanDelete}}
+        <span class="glyphicon glyphicon-trash navbar-right" onclick="return deleteMessage('{{Identifier}}');" style="margin-right: 5px;"></span>
+        {{/CanDelete}}
+    </li>
+</script>
+
+<script id="template-profile" type="text/template">
+    <li class="list-group-item">
+        <span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{Nickname}}
+    </li>
+</script>
+
+<script id="template-profile-search" type="text/template">
+    <li class="list-group-item" onclick="addConversationProfile('{{Nickname}}');">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> {{Nickname}}
     </li>
 </script>
 

@@ -136,7 +136,7 @@ namespace SimpleChat.BusinessLayer
             {
                 var message = messageEntity.ToDto();
                 message.Profile = DlProfile.GetByNickname(messageEntity.Nickname).ToDto();
-
+                message.CanDelete = message.Profile.Nickname == AuthenticationContext.Nickname;
                 messages.Add(message);
             }
 

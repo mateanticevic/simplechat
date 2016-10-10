@@ -64,6 +64,10 @@ namespace SimpleChat.Service
         Profile GetProfile();
 
         [OperationContract]
+        [WebGet(UriTemplate = "profiles/{searchQuery}", ResponseFormat = WebMessageFormat.Json)]
+        IEnumerable<Profile> GetProfiles(string searchQuery);
+
+        [OperationContract]
         [WebInvoke(Method = "POST", UriTemplate = "profile", RequestFormat = WebMessageFormat.Json)]
         object PostProfile(Profile profile);
 
