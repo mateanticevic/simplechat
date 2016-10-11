@@ -59,5 +59,39 @@
   <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
     <Folder Include="Properties" />
+    <Folder Include="dbo\" />
+    <Folder Include="dbo\Tables\" />
+    <Folder Include="Security\" />
+    <Folder Include="dbo\Functions\" />
+    <Folder Include="dbo\Stored Procedures\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="dbo\Tables\Conversation.sql" />
+    <Build Include="dbo\Tables\Profile.sql" />
+    <Build Include="dbo\Tables\Message.sql" />
+    <Build Include="dbo\Tables\ConversationSeen.sql" />
+    <Build Include="dbo\Tables\ConversationProfile.sql" />
+    <Build Include="Security\chatuser.sql" />
+    <Build Include="Security\chatuser_1.sql" />
+    <Build Include="Security\RoleMemberships.sql" />
+    <Build Include="dbo\Functions\GetProfileId.sql" />
+    <Build Include="dbo\Functions\GetConversationId.sql" />
+    <Build Include="dbo\Functions\GetMessageId.sql" />
+    <Build Include="dbo\Stored Procedures\ProfileInsert.sql" />
+    <Build Include="dbo\Stored Procedures\ProfileGet.sql" />
+    <Build Include="dbo\Stored Procedures\ProfileUpdate.sql" />
+    <Build Include="dbo\Stored Procedures\ConversationsGet.sql" />
+    <Build Include="dbo\Stored Procedures\ConversationProfilesGet.sql" />
+    <Build Include="dbo\Stored Procedures\ConversationMessagesGet.sql" />
+    <Build Include="dbo\Stored Procedures\ProfilesSearch.sql" />
+    <Build Include="dbo\Stored Procedures\ConversationSeenInsert.sql" />
+    <Build Include="dbo\Stored Procedures\ConversationInsert.sql" />
+    <Build Include="dbo\Stored Procedures\ConversationProfileInsert.sql" />
+    <Build Include="dbo\Stored Procedures\MessageInsert.sql" />
+    <Build Include="dbo\Stored Procedures\MessageDelete.sql" />
+    <Build Include="dbo\Stored Procedures\ConversationMessagesDelete.sql" />
+    <Build Include="dbo\Stored Procedures\ConversationProfileDelete.sql" />
+    <Build Include="dbo\Stored Procedures\ConversationDelete.sql" />
+    <Build Include="dbo\Stored Procedures\MessageGet.sql" />
   </ItemGroup>
 </Project>

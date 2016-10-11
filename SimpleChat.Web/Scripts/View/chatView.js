@@ -105,6 +105,8 @@ handler.newConversation = function () {
         selectedConversation = identifier;
         handler.onConversationSelected();
         loadConversations();
+        loadConversationMessages();
+        loadConversationProfiles();
     };
 
     return false;
@@ -236,7 +238,7 @@ function loadConversationProfiles() {
 
     get.OnSuccess = function (profiles) {
 
-        if (profiles != undefined && profiles.length > 0) {
+        if (profiles != undefined) {
 
             listProfiles.empty();
 
