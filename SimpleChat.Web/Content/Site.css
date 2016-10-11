@@ -60,3 +60,7 @@ textarea {
 .track3.dragging .handle3 {
     width: 10px;
 }
+
+.clickable{
+    cursor: pointer;
+}

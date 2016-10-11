@@ -10,8 +10,6 @@ namespace SimpleChat.BusinessLayer.Extensions.Dto
             return new ProfileEntity()
             {
                 Email = profile.Email,
-                FirstName = profile.FirstName,
-                LastName = profile.LastName,
                 Nickname = profile.Nickname
             };
         }

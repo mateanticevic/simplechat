@@ -80,12 +80,28 @@ namespace SimpleChat.Service
 
         public Profile GetProfile()
         {
-            return blProfile.GetMe();
+            return blProfile.GetCurrent();
         }
 
         public IEnumerable<Profile> GetConversationProfiles(string identifier)
         {
-            return blConversation.GetConversationProfiles(identifier);
+            var profiles = blConversation.GetConversationProfiles(identifier);
+
+            string ifNoneMatch = WebOperationContext.Current.IncomingRequest.Headers.Get("If-None-Match");
+
+            string etag = GetHash(profiles);
+
+            if (ifNoneMatch != etag)
+            {
+                WebOperationContext.Current.OutgoingResponse.ETag = etag;
+                return profiles;
+            }
+            else
+            {
+                WebOperationContext.Current.OutgoingResponse.ETag = etag;
+                WebOperationContext.Current.SetStatusCode(HttpStatusCode.NotModified);
+                return null;
+            }
         }
 
         public string PutConversationMessage(string identifier, MessageCreateBinding binding)

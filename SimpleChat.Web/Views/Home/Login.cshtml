@@ -3,12 +3,15 @@
     ViewBag.Title = "Login";
 }
 
-<form>
-    <input id="input-nickname" class="form-control" type="text" placeholder="Nickname" />
-    <input id="input-password" class="form-control" type="password" placeholder="Password" />
-    <button class="btn btn-default navbar-btn" onclick="return login();">Login</button>
-</form>
-
+<div class="col-lg-6 panel panel-default">
+    <h1>SimpleChat</h1>
+    <hr />
+    <form>
+        <input id="input-nickname" class="form-control" type="text" placeholder="Nickname" />
+        <input id="input-password" class="form-control" type="password" placeholder="Password" />
+        <button class="btn btn-default navbar-btn" onclick="return login();">Login</button>
+    </form>
+</div>
 
 @Scripts.Render("~/Scripts/Service/publicClient.js")
 @Scripts.Render("~/Scripts/View/loginView.js")

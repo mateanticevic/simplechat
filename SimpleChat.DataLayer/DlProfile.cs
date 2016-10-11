@@ -21,8 +21,6 @@ namespace SimpleChat.DataLayer
                 {
                     Email = dr["Email"].ToString(),
                     Nickname = dr["Nickname"].ToString(),
-                    FirstName = dr["FirstName"].ToString(),
-                    LastName = dr["LastName"].ToString(),
                     PasswordHash = dr["PasswordHash"].ToString()
                 };
             }
@@ -34,8 +32,6 @@ namespace SimpleChat.DataLayer
             {
                 var parameters = new List<SqlParameter>();
                 parameters.Add(new SqlParameter("Email", profileEntity.Email));
-                parameters.Add(new SqlParameter("FirstName", profileEntity.FirstName));
-                parameters.Add(new SqlParameter("LastName", profileEntity.LastName));
                 parameters.Add(new SqlParameter("Nickname", profileEntity.Nickname));
                 parameters.Add(new SqlParameter("PasswordHash", profileEntity.PasswordHash));
 
@@ -58,9 +54,7 @@ namespace SimpleChat.DataLayer
                     yield return new ProfileEntity()
                     {
                         Email = row["Email"].ToString(),
-                        Nickname = row["Nickname"].ToString(),
-                        FirstName = row["FirstName"].ToString(),
-                        LastName = row["LastName"].ToString()
+                        Nickname = row["Nickname"].ToString()
                     };
                 }
             }

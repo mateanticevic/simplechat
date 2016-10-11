@@ -63,6 +63,23 @@ securedClient.getConversationMessages = function (identifier, etag) {
     return callback;
 };
 
+securedClient.getConversationProfiles = function (identifier, etag) {
+    var callback = {};
+
+    var ajax = securedClient.default(callback);
+
+    ajax.url = securedClient.apiPrefix + 'conversation/' + identifier + '/profiles';
+    ajax.type = 'GET';
+    ajax.beforeSend = function (xhr) {
+        xhr.setRequestHeader("Authorization", "Token " + securedClient.token);
+        xhr.setRequestHeader("If-None-Match", etag);
+    };
+
+    $.ajax(ajax);
+
+    return callback;
+};
+
 securedClient.putConversationMessage = function (identifier, message) {
     var callback = {};
 

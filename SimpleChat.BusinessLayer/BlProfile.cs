@@ -8,6 +8,7 @@ using SimpleChat.Model;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using System.Runtime.Caching;
 
 namespace SimpleChat.BusinessLayer
 {
@@ -32,13 +33,6 @@ namespace SimpleChat.BusinessLayer
             }
         }
 
-        public Profile GetMe()
-        {
-            var profileEntity = DlProfile.GetByNickname(AuthenticationContext.Nickname);
-
-            return profileEntity.ToDto();
-        }
-
         public Profile Get(string nickname)
         {
             try
@@ -49,6 +43,39 @@ namespace SimpleChat.BusinessLayer
             catch (Exception e)
             {
                 throw new EntityNotFoundException(e);
+            }
+        }
+
+        public Profile GetCurrent()
+        {
+            var profileEntity = DlProfile.GetByNickname(AuthenticationContext.Nickname);
+
+            return profileEntity.ToDto();
+        }
+
+        public string GetToken(string nickname, string password)
+        {
+            try
+            {
+                var profile = DlProfile.GetByNickname(nickname);
+
+                if (PasswordHelper.IsPasswordHashValid(profile.PasswordHash, password))
+                {
+                    var cache = MemoryCache.Default;
+
+                    string token = TokenHelper.NewToken();
+
+                    var cacheItem = new CacheItem(token, new AuthenticationContext() { Email = profile.Email, Nickname = nickname });
+                    cache.Add(cacheItem, new CacheItemPolicy());
+
+                    return token;
+                }
+
+                throw new UnauthorizedException();
+            }
+            catch (Exception e)
+            {
+                throw new UnauthorizedException(e);
             }
         }
 

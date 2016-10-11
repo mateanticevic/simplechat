@@ -146,7 +146,8 @@ namespace SimpleChat.BusinessLayer
         public IEnumerable<Profile> GetConversationProfiles(string conversationIdentifier)
         {
             var profiles = DlConversation.GetProfiles(conversationIdentifier)
-                                         .Select(x => x.ToDto());
+                                         .Select(x => x.ToDto())
+                                         .Where(x => x.Nickname != AuthenticationContext.Nickname);
 
             return profiles;
         }

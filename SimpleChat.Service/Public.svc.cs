@@ -43,21 +43,7 @@ namespace SimpleChat.Service
 
         public string IssueToken(IssueTokenBinding binding)
         {
-            var p = DbHelper.GetProfile(binding.Nickname);
-
-            if (PasswordHelper.IsPasswordHashValid(p.PasswordHash, binding.Password))
-            {
-                var cache = MemoryCache.Default;
-
-                string token = TokenHelper.NewToken();
-
-                var cacheItem = new CacheItem(token, new AuthenticationContext() { Email = p.Email, Nickname = binding.Nickname });
-                cache.Add(cacheItem, new CacheItemPolicy());
-
-                return token;
-            }
-
-            return null;
+            return blProfile.GetToken(binding.Nickname, binding.Password);
         }
 
         public object PutProfile(Profile profile)

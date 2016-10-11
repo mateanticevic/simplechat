@@ -19,6 +19,7 @@ var etag = etag || {};
 var intervalMessages;
 
 var messagesIntervalId;
+var conversationProfilesIntervalId;
 
 $(function () {
     loadConversations();
@@ -49,23 +50,77 @@ inputSearch.keypress(function (e) {
     };
 });
 
+var handler = handler || {};
+
+handler.clickAddProfile = function (nickname) {
+
+    listProfilesSearch.empty();
+    inputSearch.val('');
+
+    securedClient.putConversationProfile(selectedConversation, nickname).OnSuccess = function () {
+
+    };
+
+    return false;
+};
+
+handler.clickConversation = function (identifier) {
+    var conversation = getConversation(identifier);
+
+    loadConversationMessages(identifier);
+
+    if (messagesIntervalId != undefined) {
+        clearInterval(messagesIntervalId);
+        clearInterval(conversationProfilesIntervalId);
+    }
+
+    messagesIntervalId = setInterval(loadConversationMessages, 2000, identifier);
+    conversationProfilesIntervalId = setInterval(loadConversationProfiles, 2000);
+};
+
+handler.clickDeleteMessage = function (identifier) {
+    deleteMessage(identifier);
+    return false;
+};
+
+handler.clickDeleteMessages = function () {
+    deleteMessages(selectedConversation);
+    return false;
+};
+
+handler.newConversation = function () {
+
+};
+
+handler.clickLeaveConversation = function () {
+    leaveConversation();
+    return false;
+};
+
+handler.clickSay = function () {
+    sendMessage();
+    return false;
+};
+
+handler.clickSignOut = function () {
+    localStorage.removeItem("token");
+    window.location.href = '/home/login';
+
+    return false;
+};
+
 function deleteMessage(identifier) {
 
     securedClient.deleteMessage(identifier).OnSuccess = function () {
 
     };
-
-
-    return false;
 };
 
-function deleteMessages() {
+function deleteMessages(identifier) {
 
     securedClient.deleteConversationMessages(selectedConversation).OnSuccess = function () {
 
     };
-
-    return false;
 };
 
 function loadConversations() {
@@ -81,6 +136,10 @@ function loadConversations() {
                 var conversation = conversations[i];
                 var template = templateConversation.html();
                 listConversations.append(Mustache.to_html(template, conversation));
+
+                if(conversation.Identifier == selectedConversation){
+                    highlightConversation(selectedConversation);
+                }
             }
 
             $(".activatable").click(function (e) {
@@ -101,32 +160,20 @@ function leaveConversation() {
 
     };
 
-    return false;
+    
 };
 
-function addConversationProfile(nickname) {
-    securedClient.putConversationProfile(selectedConversation, nickname).OnSuccess = function () {
+function addMessage(message) {
+    var template = templateMessage.html();
+    listMessages.append(Mustache.to_html(template, message));
+};
 
-    };
-
-    return false;
+function addMessageToTop(message) {
+    var template = templateMessage.html();
+    listMessages.prepend(Mustache.to_html(template, message));
 };
 
 function loadConversationMessages(identifier) {
-
-    var conversation = getConversation(identifier);
-    loadConversationProfiles(conversation.Profiles);
-
-    loadConversationMessagesT(identifier);
-
-    if (messagesIntervalId != undefined) {
-        clearInterval(messagesIntervalId);
-    }
-
-    messagesIntervalId = setInterval(loadConversationMessagesT, 2000, identifier);
-}
-
-function loadConversationMessagesT(identifier) {
 
     selectedConversation = identifier;
 
@@ -140,8 +187,7 @@ function loadConversationMessagesT(identifier) {
 
             for (var i = 0; i < messages.length; i++) {
                 var message = messages[i];
-                var template = templateMessage.html();
-                listMessages.append(Mustache.to_html(template, message));
+                addMessage(message);
             }
 
             securedClient.putConversationSeen(selectedConversation).OnSuccess = function () {
@@ -154,17 +200,27 @@ function loadConversationMessagesT(identifier) {
     };
 };
 
-function loadConversationProfiles(profiles) {
+function loadConversationProfiles() {
 
-    model.profiles = profiles;
+    var get = securedClient.getConversationProfiles(selectedConversation, etag.conversationProfilesETag);
 
-    listProfiles.empty();
+    get.OnSuccess = function (profiles) {
 
-    for (var i = 0; i < profiles.length; i++) {
-        var profile = profiles[i];
-        var template = templateProfile.html();
-        listProfiles.append(Mustache.to_html(template, profile));
-    }
+        if (profiles != undefined && profiles.length > 0) {
+
+            listProfiles.empty();
+
+            for (var i = 0; i < profiles.length; i++) {
+                var profile = profiles[i];
+                var template = templateProfile.html();
+                listProfiles.append(Mustache.to_html(template, profile));
+            }
+        }
+    };
+
+    get.OnComplete = function (xhr) {
+        etag.conversationProfilesETag = xhr.getResponseHeader("ETag");
+    };
 };
 
 function getConversation(identifier) {
@@ -177,17 +233,13 @@ function getConversation(identifier) {
     return null;
 };
 
-function say() {
-    securedClient.putConversationMessage(selectedConversation, inputSay.val()).OnSuccess = function () {
+function sendMessage() {
+    securedClient.putConversationMessage(selectedConversation, inputSay.val()).OnSuccess = function (identifier) {
+        addMessageToTop({CanDelete: true, Profile: { Nickname: 'mate' }, Content: inputSay.val(), Identifier: identifier });
         inputSay.val('');
     };
-
-    return false;
 };
 
-function singOut() {
-    localStorage.removeItem("token");
-    window.location.href = '/home/login';
-
-    return false;
+function highlightConversation (identifier){
+    $("#conversation-" + identifier).addClass("active");
 };

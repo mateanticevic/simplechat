@@ -89,8 +89,6 @@ namespace SimpleChat.DataLayer
                 {
                     yield return new ProfileEntity()
                     {
-                        FirstName = dataRow["FirstName"].ToString(),
-                        LastName = dataRow["LastName"].ToString(),
                         Nickname = dataRow["Nickname"].ToString()
                     };
                 }
