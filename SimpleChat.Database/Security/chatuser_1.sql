@@ -1,0 +1,3 @@
+﻿CREATE LOGIN [chatuser]
+    WITH PASSWORD = N'3myAcjkFk0slls9hd{Jwo_tbmsFT7_&#$!~<f!sno&|xdoxj', SID = 0xA0CFB88F6711F545B4780D4C820FF808, DEFAULT_DATABASE = [Chat], DEFAULT_LANGUAGE = [us_english], CHECK_POLICY = OFF;
+
