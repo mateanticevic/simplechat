@@ -44,10 +44,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.ApplicationInsights, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.ApplicationInsights.2.1.0\lib\net45\Microsoft.ApplicationInsights.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
@@ -166,7 +162,7 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\Service\publicClient.js" />
     <Content Include="Scripts\Service\securedClient.js" />
-    <Content Include="Scripts\Validation\register_validate.js" />
+    <Content Include="Scripts\Validation\registerValidation.js" />
     <Content Include="Scripts\View\chatView.js" />
     <Content Include="Scripts\View\indexView.js" />
     <Content Include="Scripts\View\loginView.js" />

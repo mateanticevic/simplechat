@@ -3,21 +3,23 @@ var inputEmail = $("#input-email");
 var inputPassword = $("#input-password");
 var inputPasswordRepeat = $("#input-password-repeat");
 
-function register() {
+var handler = handler || {};
+
+handler.clickRegister = function () {
     var profile = {
         Nickname: inputNickname.val(),
         Email: inputEmail.val(),
-        Password: inputPassword.val(),
-        FirstName: "Ab",
-        LastName: "Nab"
+        Password: inputPassword.val()
     };
 
     var json = JSON.stringify(profile);
 
     publicClient.putProfile(json).OnSuccess = function (data)
     {
-        alert("success");
+        window.location.href = "/home/login";
     }
+
+    return false;
 };
 
 function isNicknameTaken() {

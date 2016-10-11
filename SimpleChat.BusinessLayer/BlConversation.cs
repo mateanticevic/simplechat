@@ -2,7 +2,6 @@
 using SimpleChat.BusinessLayer.Extensions.Entities;
 using SimpleChat.Common.Authentication;
 using SimpleChat.DataLayer;
-using SimpleChat.Model.Binding;
 using SimpleChat.Model;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,7 +32,7 @@ namespace SimpleChat.BusinessLayer
         {
             try
             {
-                string identifier = DlConversation.InsertConversation(AuthenticationContext.Nickname);
+                string identifier = DlConversation.Insert(AuthenticationContext.Nickname);
                 AddProfileToConversation(AuthenticationContext.Nickname, identifier);
 
                 return identifier;
@@ -44,36 +43,15 @@ namespace SimpleChat.BusinessLayer
             }
         }
 
-        public string CreateMessage(string conversationIdentifier, MessageCreateBinding message)
-        {
-            string identifier = DlMessage.InsertMessage(AuthenticationContext.Nickname, conversationIdentifier, message.Content);
-
-            return identifier;
-        }
-
-        public IEnumerable<Conversation> GetConversations()
+        public string CreateMessage(string conversationIdentifier, Message message)
         {
             try
             {
-                var conversationEntities = DlConversation.GetConversations(AuthenticationContext.Nickname);
-
-                var conversations = new List<Conversation>();
-
-                foreach (var conversationEntity in conversationEntities)
-                {
-                    var conversation = conversationEntity.ToDto();
-                    conversation.Profiles = DlConversation.GetProfiles(conversationEntity.Identifier)
-                                                          .Select(x => x.ToDto());
-                    conversation.Profiles = conversation.Profiles.Where(x => x.Nickname != AuthenticationContext.Nickname);
-
-                    conversations.Add(conversation);
-                }
-
-                return conversations;
+                return DlMessage.Insert(AuthenticationContext.Nickname, conversationIdentifier, message.Content);
             }
-            catch
+            catch (Exception e)
             {
-                throw new UnknownException();
+                throw new EntityNotFoundException(e);
             }
         }
 
@@ -81,14 +59,14 @@ namespace SimpleChat.BusinessLayer
         {
             try
             {
-                var message = DlMessage.GetMessage(messageIdentifier);
+                var message = DlMessage.Get(messageIdentifier);
 
                 if (message.Nickname != AuthenticationContext.Nickname)
                 {
                     throw new UnauthorizedException();
                 }
 
-                return DlMessage.DeleteMessage(messageIdentifier);
+                return DlMessage.Delete(messageIdentifier);
             }
             catch (Exception e)
             {
@@ -127,29 +105,67 @@ namespace SimpleChat.BusinessLayer
             }
         }
 
-        public IEnumerable<Message> GetMessages(string conversationIdentifier)
+        public IEnumerable<Conversation> GetConversations()
         {
-            var messageEntities = DlConversation.GetMessages(conversationIdentifier);
-
-            var messages = new List<Message>();
-            foreach (var messageEntity in messageEntities)
+            try
             {
-                var message = messageEntity.ToDto();
-                message.Profile = DlProfile.GetByNickname(messageEntity.Nickname).ToDto();
-                message.CanDelete = message.Profile.Nickname == AuthenticationContext.Nickname;
-                messages.Add(message);
-            }
+                var conversationEntities = DlConversation.GetConversations(AuthenticationContext.Nickname);
 
-            return messages;
+                var conversations = new List<Conversation>();
+
+                foreach (var conversationEntity in conversationEntities)
+                {
+                    var conversation = conversationEntity.ToDto();
+                    conversation.Profiles = DlConversation.GetProfiles(conversationEntity.Identifier)
+                                                          .Select(x => x.ToDto());
+                    conversation.Profiles = conversation.Profiles.Where(x => x.Nickname != AuthenticationContext.Nickname);
+
+                    conversations.Add(conversation);
+                }
+
+                return conversations;
+            }
+            catch
+            {
+                throw new UnknownException();
+            }
         }
 
         public IEnumerable<Profile> GetConversationProfiles(string conversationIdentifier)
         {
-            var profiles = DlConversation.GetProfiles(conversationIdentifier)
-                                         .Select(x => x.ToDto())
-                                         .Where(x => x.Nickname != AuthenticationContext.Nickname);
+            try
+            {
+                return DlConversation.GetProfiles(conversationIdentifier)
+                                     .Select(x => x.ToDto())
+                                     .Where(x => x.Nickname != AuthenticationContext.Nickname);
+            }
+            catch (Exception e)
+            {
+                throw new EntityNotFoundException(e);
+            }
+        }
 
-            return profiles;
+        public IEnumerable<Message> GetMessages(string conversationIdentifier)
+        {
+            try
+            {
+                var messageEntities = DlConversation.GetMessages(conversationIdentifier);
+
+                var messages = new List<Message>();
+                foreach (var messageEntity in messageEntities)
+                {
+                    var message = messageEntity.ToDto();
+                    message.Profile = DlProfile.Get(messageEntity.Nickname).ToDto();
+                    message.CanDelete = message.Profile.Nickname == AuthenticationContext.Nickname;
+                    messages.Add(message);
+                }
+
+                return messages;
+            }
+            catch (Exception e)
+            {
+                throw new EntityNotFoundException(e);
+            }
         }
 
         public bool Seen(string conversationIdentifier)

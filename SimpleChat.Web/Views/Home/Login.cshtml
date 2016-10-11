@@ -3,14 +3,25 @@
     ViewBag.Title = "Login";
 }
 
-<div class="col-lg-6 panel panel-default">
-    <h1>SimpleChat</h1>
-    <hr />
-    <form>
-        <input id="input-nickname" class="form-control" type="text" placeholder="Nickname" />
-        <input id="input-password" class="form-control" type="password" placeholder="Password" />
-        <button class="btn btn-default navbar-btn" onclick="return login();">Login</button>
-    </form>
+<div class="row">
+    <div class="col-lg-4"></div>
+    <div class="col-lg-4 panel panel-default">
+        <h1>Simple chat</h1>
+        <hr />
+        <form>
+            <input id="input-nickname" class="form-control top-buffer" type="text" placeholder="Nickname" />
+            <input id="input-password" class="form-control top-buffer" type="password" placeholder="Password" />
+            <button class="btn btn-default navbar-btn top-buffer" type="submit" onclick="return handler.clickLogin();">Log in</button>
+            <button class="btn btn-default navbar-btn top-buffer" type="button" onclick="return handler.clickRegister();">Register</button>
+        </form>
+    </div>
+    <div class="col-lg-4">
+        <div id="alert-login" class="alert alert-danger" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span class="sr-only">Error:</span>
+            Invalid nickname and password combination
+        </div>
+    </div>
 </div>
 
 @Scripts.Render("~/Scripts/Service/publicClient.js")

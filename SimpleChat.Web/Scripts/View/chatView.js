@@ -1,10 +1,15 @@
-﻿var listConversations = $("#list-conversations");
+﻿var currentNickname = localStorage.getItem("nickname");
+
+var listConversations = $("#list-conversations");
 var listMessages = $("#list-messages");
 var listProfiles = $("#list-profiles");
 var listProfilesSearch = $("#list-profiles-search");
 
 var inputSay = $("#input-say");
 var inputSearch = $("#input-search");
+
+var conversationControl = $("#conversation-control");
+var conversationOptions = $("#conversation-options");
 
 var templateConversation = $("#template-conversation");
 var templateMessage = $("#template-message");
@@ -24,6 +29,7 @@ var conversationProfilesIntervalId;
 $(function () {
     loadConversations();
     setInterval(loadConversations, 2000);
+    handler.onConversationUnselected();
 });
 
 listMessages.enscroll({
@@ -32,9 +38,10 @@ listMessages.enscroll({
     verticalHandleClass: 'handle3'
 });
 
-inputSearch.keypress(function (e) {
+inputSearch.keyup(function (e) {
 
     if (inputSearch.val().length < 1) {
+        listProfilesSearch.empty();
         return;
     };
 
@@ -58,16 +65,21 @@ handler.clickAddProfile = function (nickname) {
     inputSearch.val('');
 
     securedClient.putConversationProfile(selectedConversation, nickname).OnSuccess = function () {
-
+        loadConversations();
+        loadConversationProfiles();
     };
 
     return false;
 };
 
 handler.clickConversation = function (identifier) {
+
+    selectedConversation = identifier;
     var conversation = getConversation(identifier);
 
-    loadConversationMessages(identifier);
+    loadConversationProfiles();
+    loadConversationMessages();
+    handler.onConversationSelected();
 
     if (messagesIntervalId != undefined) {
         clearInterval(messagesIntervalId);
@@ -89,7 +101,13 @@ handler.clickDeleteMessages = function () {
 };
 
 handler.newConversation = function () {
+    securedClient.putConversation().OnSuccess = function (identifier) {
+        selectedConversation = identifier;
+        handler.onConversationSelected();
+        loadConversations();
+    };
 
+    return false;
 };
 
 handler.clickLeaveConversation = function () {
@@ -109,10 +127,20 @@ handler.clickSignOut = function () {
     return false;
 };
 
+handler.onConversationSelected = function () {
+    conversationOptions.show();
+    conversationControl.show();
+};
+
+handler.onConversationUnselected = function () {
+    conversationOptions.hide();
+    conversationControl.hide();
+};
+
 function deleteMessage(identifier) {
 
     securedClient.deleteMessage(identifier).OnSuccess = function () {
-
+        loadConversationMessages();
     };
 };
 
@@ -142,6 +170,10 @@ function loadConversations() {
                 }
             }
 
+            if (conversations.length == 0) {
+                handler.onConversationUnselected();
+            }
+
             $(".activatable").click(function (e) {
                 $(".activatable").removeClass("active");
                 $(this).addClass("active");
@@ -157,10 +189,11 @@ function loadConversations() {
 function leaveConversation() {
 
     securedClient.deleteConversationProfile(selectedConversation).OnSuccess = function () {
-
+        listMessages.empty();
+        listProfiles.empty();
+        handler.onConversationUnselected();
+        loadConversations();
     };
-
-    
 };
 
 function addMessage(message) {
@@ -173,15 +206,12 @@ function addMessageToTop(message) {
     listMessages.prepend(Mustache.to_html(template, message));
 };
 
-function loadConversationMessages(identifier) {
-
-    selectedConversation = identifier;
-
-    var get = securedClient.getConversationMessages(identifier, etag.messagesETag);
+function loadConversationMessages() {
+    var get = securedClient.getConversationMessages(selectedConversation, etag.messagesETag);
 
     get.OnSuccess = function (messages) {
 
-        if (messages != undefined && messages.length > 0) {
+        if (messages != undefined) {
 
             listMessages.empty();
 
@@ -235,7 +265,7 @@ function getConversation(identifier) {
 
 function sendMessage() {
     securedClient.putConversationMessage(selectedConversation, inputSay.val()).OnSuccess = function (identifier) {
-        addMessageToTop({CanDelete: true, Profile: { Nickname: 'mate' }, Content: inputSay.val(), Identifier: identifier });
+        addMessageToTop({ CanDelete: true, Profile: { Nickname: currentNickname }, Content: inputSay.val(), Identifier: identifier });
         inputSay.val('');
     };
 };

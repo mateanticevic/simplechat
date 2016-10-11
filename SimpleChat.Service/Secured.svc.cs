@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using SimpleChat.BusinessLayer;
-using SimpleChat.Model.Binding;
 using SimpleChat.Model;
 using SimpleChat.Service.Extensions;
 using System.Collections.Generic;
@@ -104,7 +103,7 @@ namespace SimpleChat.Service
             }
         }
 
-        public string PutConversationMessage(string identifier, MessageCreateBinding binding)
+        public string PutConversationMessage(string identifier, Message binding)
         {
             string messageIdentifier = blConversation.CreateMessage(identifier, binding);
 

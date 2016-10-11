@@ -41,7 +41,7 @@ namespace SimpleChat.Service
             return null;
         }
 
-        public string IssueToken(IssueTokenBinding binding)
+        public string PostToken(IssueTokenBinding binding)
         {
             return blProfile.GetToken(binding.Nickname, binding.Password);
         }

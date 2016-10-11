@@ -34,12 +34,15 @@ publicClient.postToken = function (json) {
     var callback = {};
 
     $.ajax({
-        url: '/api/public.svc/issueToken',
+        url: '/api/public.svc/token',
         contentType: "application/json",
         type: 'POST',
         data: json,
         success: function (token) {
             callback.OnSuccess(token);
+        },
+        complete: function (xhr) {
+            callback.OnComplete(xhr);
         }
     });
 

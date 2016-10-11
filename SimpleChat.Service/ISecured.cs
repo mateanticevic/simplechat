@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ServiceModel.Web;
 using System.ServiceModel;
-using SimpleChat.Model.Binding;
 
 namespace SimpleChat.Service
 {
@@ -37,7 +36,7 @@ namespace SimpleChat.Service
 
         [OperationContract]
         [WebInvoke(Method = "PUT", UriTemplate = "conversation/{identifier}/message", ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json)]
-        string PutConversationMessage(string identifier, MessageCreateBinding binding);
+        string PutConversationMessage(string identifier, Message binding);
 
         [OperationContract]
         [WebInvoke(Method = "PUT", UriTemplate = "conversation/{identifier}/profile", ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json)]

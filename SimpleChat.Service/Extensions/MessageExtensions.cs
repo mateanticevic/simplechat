@@ -1,5 +1,4 @@
 ﻿using SimpleChat.Common.Authentication;
-using System.Linq;
 using System.Net;
 using System.ServiceModel.Channels;
 using System.Text.RegularExpressions;
@@ -29,18 +28,6 @@ namespace SimpleChat.Service.Extensions
             else
             {
                 return null;
-            }
-        }
-
-        public static string GetMethodName(this Message request)
-        {
-            if (request.Headers.Action != null)
-            {
-                return request.Headers.Action.Substring(request.Headers.Action.LastIndexOf('/') + 1);
-            }
-            else
-            {
-                return request.Properties.Via.Segments.LastOrDefault();
             }
         }
 

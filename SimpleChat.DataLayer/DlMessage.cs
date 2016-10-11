@@ -1,14 +1,14 @@
 ﻿using SimpleChat.Common.Extensions;
 using SimpleChat.DataLayer.Entities;
-using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System;
 
 namespace SimpleChat.DataLayer
 {
     public class DlMessage
     {
-        public static bool DeleteMessage(string identifier)
+        public static bool Delete(string identifier)
         {
             using (var connection = DbHelper.GetConnection())
             {
@@ -19,7 +19,7 @@ namespace SimpleChat.DataLayer
             }
         }
 
-        public static MessageEntity GetMessage(string identifier)
+        public static MessageEntity Get(string identifier)
         {
             using (var connection = DbHelper.GetConnection())
             {
@@ -38,7 +38,7 @@ namespace SimpleChat.DataLayer
             }
         }
 
-        public static string InsertMessage(string nickname, string conversationIdentifier, string message)
+        public static string Insert(string nickname, string conversationIdentifier, string message)
         {
             using (var connection = DbHelper.GetConnection())
             {

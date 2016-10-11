@@ -80,6 +80,19 @@ securedClient.getConversationProfiles = function (identifier, etag) {
     return callback;
 };
 
+securedClient.putConversation = function () {
+    var callback = {};
+
+    var ajax = securedClient.default(callback);
+
+    ajax.url = securedClient.apiPrefix + 'conversation';
+    ajax.type = 'PUT';
+
+    $.ajax(ajax);
+
+    return callback;
+};
+
 securedClient.putConversationMessage = function (identifier, message) {
     var callback = {};
 

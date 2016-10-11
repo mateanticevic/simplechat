@@ -1,16 +1,32 @@
 ﻿var validationNicknameFree = $("#validation-nickname-free");
 var validationNicknameTaken = $("#validation-nickname-taken");
+var validationNicknameShort = $("#validation-nickname-short");
 var validationEmail = $("#validation-email");
 var validationPassword = $("#validation-password");
 var validationPasswordRepeat = $("#validation-password-repeat");
 
-validationNicknameFree.hide();
-validationNicknameTaken.hide();
-validationEmail.hide();
-validationPassword.hide();
-validationPasswordRepeat.hide();
+$(function () {
+    disableRegister();
+    validationNicknameFree.hide();
+    validationNicknameTaken.hide();
+    validationNicknameShort.hide();
+    validationEmail.hide();
+    validationPassword.hide();
+    validationPasswordRepeat.hide();
+});
 
 inputNickname.focusout(function (e) {
+
+    if(inputNickname.val().length < 3){
+        validationNicknameShort.show();
+        validationNicknameFree.hide();
+        validationNicknameTaken.hide();
+        return;
+    }
+    else {
+        validationNicknameShort.hide();
+    }
+
     isNicknameTaken().OnSuccess = function (isTaken) {
         if (isTaken) {
             validationNicknameFree.hide();
@@ -53,3 +69,32 @@ inputPasswordRepeat.focusout(function (e){
         validationPasswordRepeat.show();
     }
 });
+
+$("input").focusout(function (e) {
+    var hasValidationErrors = $(".alert-danger").has(":visible").length != 0;
+
+    var fieldsNotEmpty = true;
+
+    $("input").each(function () {
+        var element = $(this);
+        if (element.val() == "") {
+            fieldsNotEmpty = false;
+        }
+    });
+
+    if (!hasValidationErrors && fieldsNotEmpty) {
+        enableRegister();
+    }
+    else
+    {
+        disableRegister();
+    }
+});
+
+function enableRegister() {
+    $("#register-submit").prop("disabled", false);
+}
+
+function disableRegister() {
+    $("#register-submit").prop("disabled", true);
+}

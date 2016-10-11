@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.ServiceModel;
+﻿using System.Collections.ObjectModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Configuration;
 using System.ServiceModel.Description;
 using System.ServiceModel.Dispatcher;
+using System.ServiceModel;
+using System;
 
 namespace SimpleChat.Service.Handlers
 {

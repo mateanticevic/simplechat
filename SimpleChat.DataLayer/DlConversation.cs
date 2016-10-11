@@ -95,7 +95,7 @@ namespace SimpleChat.DataLayer
             }
         }
 
-        public static string InsertConversation(string nickname)
+        public static string Insert(string nickname)
         {
             using (var connection = DbHelper.GetConnection())
             {

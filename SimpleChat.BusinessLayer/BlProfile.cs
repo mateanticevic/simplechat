@@ -37,7 +37,7 @@ namespace SimpleChat.BusinessLayer
         {
             try
             {
-                return DlProfile.GetByNickname(nickname)
+                return DlProfile.Get(nickname)
                                 .ToDto();
             }
             catch (Exception e)
@@ -48,16 +48,14 @@ namespace SimpleChat.BusinessLayer
 
         public Profile GetCurrent()
         {
-            var profileEntity = DlProfile.GetByNickname(AuthenticationContext.Nickname);
-
-            return profileEntity.ToDto();
+            return Get(AuthenticationContext.Nickname);
         }
 
         public string GetToken(string nickname, string password)
         {
             try
             {
-                var profile = DlProfile.GetByNickname(nickname);
+                var profile = DlProfile.Get(nickname);
 
                 if (PasswordHelper.IsPasswordHashValid(profile.PasswordHash, password))
                 {

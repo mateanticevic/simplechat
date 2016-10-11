@@ -1,14 +1,14 @@
 ﻿using SimpleChat.Common.Extensions;
 using SimpleChat.DataLayer.Entities;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.SqlClient;
+using System.Data;
 
 namespace SimpleChat.DataLayer
 {
     public static class DlProfile
     {
-        public static ProfileEntity GetByNickname(string nickname)
+        public static ProfileEntity Get(string nickname)
         {
             using (var connection = DbHelper.GetConnection())
             {

@@ -1,7 +1,7 @@
 ﻿using SimpleChat.Common.Authentication;
 using System.Linq;
-using System.ServiceModel;
 using System.ServiceModel.Channels;
+using System.ServiceModel;
 
 namespace SimpleChat.Service.Extensions
 {
@@ -14,14 +14,6 @@ namespace SimpleChat.Service.Extensions
             var authenticationContext = (AuthenticationContext)authenticationContextObject.Value;
 
             return authenticationContext;
-        }
-
-        public static string GetIpAddress(this OperationContext context)
-        {
-            MessageProperties messageProperties = context.IncomingMessageProperties;
-            var endpointProperty = messageProperties[RemoteEndpointMessageProperty.Name] as RemoteEndpointMessageProperty;
-
-            return endpointProperty.Address;
         }
     }
 }
